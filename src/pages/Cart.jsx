@@ -28,7 +28,7 @@ export const Cart = () => {
 	};
 
 	return (
-		<div className="min-h-screen mt-[10vh] bg-gray-100 py-10">
+		<div className="min-h-screen mt-[10vh] from-cyan-50 to-cyan-200 bg-gradient-to-r py-10">
 			<h1 className="text-center md:text-6xl text-4xl font-bold mb-8 tracking-widest">Your Cart</h1>
 
 			{cartItems.length === 0 ? (

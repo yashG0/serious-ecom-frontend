@@ -1,40 +1,52 @@
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {fetchCategories} from "../api/category_handler.js";
+import {
+	ComputerDesktopIcon,
+	HomeModernIcon,
+	BookOpenIcon,
+	TrophyIcon,
+} from "@heroicons/react/24/solid";
+import {FaShirt} from "react-icons/fa6";
+
 
 export const Categories = () => {
 	const navigate = useNavigate();
+	const [categories, setCategories] = useState([]);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState(null);
 
-	const categories = [
-		{
-			id: 1,
-			name: "Electronics",
-			image: "https://via.placeholder.com/300?text=Electronics",
-		},
-		{
-			id: 2,
-			name: "Fashion",
-			image: "https://via.placeholder.com/300?text=Fashion",
-		},
-		{
-			id: 3,
-			name: "Home Appliances",
-			image: "https://via.placeholder.com/300?text=Home+Appliances",
-		},
-		{
-			id: 4,
-			name: "Books",
-			image: "https://via.placeholder.com/300?text=Books",
-		},
-		{
-			id: 5,
-			name: "Sports",
-			image: "https://via.placeholder.com/300?text=Sports",
-		},
-		{
-			id: 6,
-			name: "Toys",
-			image: "https://via.placeholder.com/300?text=Toys",
-		},
-	];
+	useEffect(() => {
+		const getCategories = async () => {
+			try {
+				const fetchedCategories = await fetchCategories();
+				setCategories(fetchedCategories);
+			} catch (err) {
+				setError(err);
+			} finally {
+				setLoading(false);
+			}
+		};
+
+		getCategories();
+	}, []);
+
+	if (loading) {
+		return <div>Loading categories...</div>; // Or a loading spinner
+	}
+
+	if (error) {
+		return <div>Error: {error.message}</div>;
+	}
+
+	const categoryIcons = {
+		Electronics: <ComputerDesktopIcon className="w-12 h-12" />,
+		Kitchen: <HomeModernIcon className="w-12 h-12" />,
+		Books: <BookOpenIcon className="w-12 h-12" />,
+		Sports: <TrophyIcon className="w-12 h-12" />,
+		Clothing: <FaShirt className="w-12 h-12" />,
+		// Add more categories and icons as needed
+	};
 
 	return (
 		<div className="mt-[10vh] min-h-screen bg-gradient-to-r from-cyan-50 to-cyan-100 py-10">
@@ -46,30 +58,42 @@ export const Categories = () => {
 				{categories.map((category) => (
 					<div
 						key={category.id}
-						onClick={() => navigate(`/product/byCategory/${category.name}`)}
-						className="relative bg-white rounded-xl overflow-hidden shadow-md transform hover:scale-105 hover:shadow-xl transition duration-300 cursor-pointer"
+						onClick={() => navigate(`/product/byCategory/${category.id}`)}
+						className="relative bg-white rounded-xl overflow-hidden shadow-lg transition duration-300 cursor-pointer hover:scale-105 hover:shadow-2xl p-8 flex flex-col items-center justify-center"
 					>
-						<div className="relative">
-							<img
-								src={category.image}
-								alt={category.name}
-								className="w-full h-56 object-cover"
-							/>
-							<div
-								className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 hover:opacity-100 transition duration-300">
-								<span className="text-white text-xl font-semibold">
-									Explore {category.name}
-								</span>
+						{/* Category Name with Icon */}
+						<div className="mb-4">
+              <span className="text-4xl text-cyan-500">
+                {categoryIcons[category.name] || (
+	                // Fallback icon if no match is found
+	                <svg
+		                xmlns="http://www.w3.org/2000/svg"
+		                fill="none"
+		                viewBox="0 0 24 24"
+		                strokeWidth={1.5}
+		                stroke="currentColor"
+		                className="w-12 h-12"
+	                >
+		                <path
+			                strokeLinecap="round"
+			                strokeLinejoin="round"
+			                d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z"
+		                />
+	                </svg>
+                )}
+              </span>
+						</div>
+
+						{/* Category Description (Optional) */}
+						{category.description && (
+							<div className="mt-4 text-center">
+								<p className="text-gray-600 text-sm">
+									{category.description}
+								</p>
 							</div>
-						</div>
-						<div className="p-4 text-center">
-							<h2 className="text-xl font-semibold text-gray-700">
-								{category.name}
-							</h2>
-						</div>
+						)}
 					</div>
 				))}
 			</div>
-		</div>
-	);
+		</div>  );
 };

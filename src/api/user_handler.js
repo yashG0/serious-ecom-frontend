@@ -21,12 +21,7 @@ export const fetchUserInfo = async () => {
 			throw new Error('Failed to fetch user information');
 		}
 
-		const userData = await res.json();
-
-		// You can use this data, e.g., store it in Redux or state
-		console.log('User Info:', userData);
-
-		return userData;
+		return await res.json();
 	} catch (e) {
 		console.error('Error fetching user info:', e.message);
 		throw new Error('Error fetching user info: ' + e.message);
@@ -56,10 +51,6 @@ export const changePassword = async (currentPassword, newPassword) => {
 
 		if (!res.ok) {
 			throw new Error("Failed to change password");
-		}
-
-		if (res.status === 204){
-			console.log("Password changed successfully", res.status);
 		}
 
 	} catch (err) {

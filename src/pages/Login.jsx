@@ -20,8 +20,8 @@ export const Login = () => {
 
 		try {
 			const credentials = {username: email, password};
-			const response = await login(credentials);
-			console.log("Login successful:", response);
+			await login(credentials);
+
 			// Redirect or perform any other action on successful login
 			dispatch(changeStatus(true));
 			navigate("/");

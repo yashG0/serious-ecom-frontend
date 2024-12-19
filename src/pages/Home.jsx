@@ -1,9 +1,18 @@
 import {Link} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {fetchAllProducts} from "../api/product_handler.js";
 
 export const Home = () => {
+
+	const [products, setProducts] = useState([]);
+
+	useEffect(() => {
+		fetchAllProducts().then((res) => setProducts(res));
+	}, []);
+
 	return (
 		<>
-			<div className="mt-[10vh] h-screen w-full bg-gradient-to-r from-cyan-50 to-cyan-200">
+			<div className="mt-[10vh] min-h-screen w-full bg-gradient-to-r from-cyan-50 to-cyan-200">
 				{/* Hero Section */}
 				<div className="w-[85%] mx-auto py-10 flex flex-col items-center">
 					<div className="text-center">
@@ -27,21 +36,21 @@ export const Home = () => {
 					</h2>
 					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
 						{/* Example Product Cards */}
-						{[1, 2, 3, 4].map((item) => (
+						{products.slice(0, 4).map((item, key) => (
 							<div
-								key={item}
-								className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
+								key={key}
+								className="bg-gray-800 rounded-lg shadow-md overflow-hidden hover:shadow-lg transition duration-300"
 							>
 								<img
-									src={`https://via.placeholder.com/200?text=Product+${item}`}
-									alt={`Product ${item}`}
+									src={`https://via.placeholder.com/200?text=Product`}
+									alt={`Product ${item.name}`}
 									className="w-full h-48 object-cover"
 								/>
 								<div className="p-4">
-									<h3 className="text-lg font-semibold text-gray-800">
-										Product {item}
+									<h3 className="text-lg font-semibold text-white">
+										{item.name.toUpperCase()}
 									</h3>
-									<p className="mt-2 text-gray-600">$20.00</p>
+									<p className="mt-2 text-gray-100">Rs.{item.price}</p>
 									<button
 										className="mt-4 px-4 py-2 w-full bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition duration-300">
 										Add to Cart

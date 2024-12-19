@@ -27,8 +27,6 @@ export const login = async (credentials) => {
 
 		if (data.access_token) {
 			localStorage.setItem("token", data.access_token); // Store the token
-			console.log("Logged in successfully", data);
-			return data;
 		} else {
 			throw new Error("No access token returned from the backend");
 		}
@@ -51,12 +49,6 @@ export const signup = async (userDetails) => {
 
 		if (!res.ok) {
 			throw new Error(`Signup failed with status code ${res.status}`);
-		}
-
-		if (res.status === 201) {
-			const message = "User created successfully";
-			console.log(message);
-			return message;
 		}
 
 		return await res.json();
