@@ -19,9 +19,8 @@ export const Account = () => {
 				setError(`Failed to load user information ${e}`);
 			}
 		};
-
 		getUserInfo();
-	}, []); // Empty dependency array to run only once on mount
+	}, []);
 
 	const handlePasswordChange = async (e) => {
 		e.preventDefault();

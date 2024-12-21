@@ -13,44 +13,22 @@ import {FaShirt} from "react-icons/fa6";
 export const Categories = () => {
 	const navigate = useNavigate();
 	const [categories, setCategories] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState(null);
 
 	useEffect(() => {
-		const getCategories = async () => {
-			try {
-				const fetchedCategories = await fetchCategories();
-				setCategories(fetchedCategories);
-			} catch (err) {
-				setError(err);
-			} finally {
-				setLoading(false);
-			}
-		};
-
-		getCategories();
+		fetchCategories().then((res) => setCategories(res)).catch((err) => console.error(err));
 	}, []);
 
-	if (loading) {
-		return <div>Loading categories...</div>; // Or a loading spinner
-	}
-
-	if (error) {
-		return <div>Error: {error.message}</div>;
-	}
-
 	const categoryIcons = {
-		Electronics: <ComputerDesktopIcon className="w-12 h-12" />,
-		Kitchen: <HomeModernIcon className="w-12 h-12" />,
-		Books: <BookOpenIcon className="w-12 h-12" />,
-		Sports: <TrophyIcon className="w-12 h-12" />,
-		Clothing: <FaShirt className="w-12 h-12" />,
-		// Add more categories and icons as needed
+		Electronics: <ComputerDesktopIcon className="w-12 h-12"/>,
+		Kitchen: <HomeModernIcon className="w-12 h-12"/>,
+		Books: <BookOpenIcon className="w-12 h-12"/>,
+		Sports: <TrophyIcon className="w-12 h-12"/>,
+		Clothing: <FaShirt className="w-12 h-12"/>,
 	};
 
 	return (
 		<div className="mt-[10vh] min-h-screen bg-gradient-to-r from-cyan-50 to-cyan-100 py-10">
-			<h1 className="text-center md:text-6xl text-4xl font-extrabold text-gray-800 mb-12 tracking-wide">
+			<h1 className="text-center md:text-6xl text-4xl font-extrabold text-gray-800 mb-12 tracking-widest">
 				Shop by Categories
 			</h1>
 
@@ -95,5 +73,5 @@ export const Categories = () => {
 					</div>
 				))}
 			</div>
-		</div>  );
+		</div>);
 };

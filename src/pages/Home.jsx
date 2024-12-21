@@ -1,13 +1,15 @@
 import {Link} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {fetchAllProducts} from "../api/product_handler.js";
+import {useSelector} from "react-redux";
 
 export const Home = () => {
 
 	const [products, setProducts] = useState([]);
+	const authStatus = useSelector(state => state.auth.value);
 
 	useEffect(() => {
-		fetchAllProducts().then((res) => setProducts(res));
+		fetchAllProducts().then((res) => setProducts(res)).catch((err) => console.error(err));
 	}, []);
 
 	return (
@@ -23,10 +25,12 @@ export const Home = () => {
 							Discover amazing products at unbeatable prices.
 						</p>
 					</div>
-					<button
-						className="mt-8 px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition duration-300">
-						Shop Now
-					</button>
+					<Link to={"/product"}>
+						<button
+							className="mt-8 px-6 py-3 bg-cyan-600 text-white font-semibold rounded-lg hover:bg-cyan-700 transition duration-300">
+							Shop Now
+						</button>
+					</Link>
 				</div>
 
 				{/* Featured Products */}
@@ -66,12 +70,12 @@ export const Home = () => {
 					<h2 className="text-2xl md:text-4xl font-bold">
 						Ready to start shopping?
 					</h2>
-					<button
-						className="mt-6 px-6 py-3 bg-white text-cyan-800 font-semibold rounded-lg hover:bg-gray-100 transition duration-300">
-						<Link to="/login">
+					<Link to={!authStatus?"/login":"/product"}>
+						<button
+							className="mt-6 px-6 py-3 bg-white text-cyan-800 font-semibold rounded-lg hover:bg-gray-100 transition duration-300">
 							Get Started
-						</Link>
-					</button>
+						</button>
+					</Link>
 				</div>
 			</div>
 		</>
